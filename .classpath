@@ -17,6 +17,8 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/snappy-java-1.0.5.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/WebCollector-1.15.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xz-1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/lucene-core-4.10.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/lucene-analyzers-common-4.10.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
