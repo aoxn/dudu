@@ -55,14 +55,7 @@ public class PageIndexer {
 	 * @param page
 	 */
 	public void indexPage(Page page) {
-		try {
-			lock.lock();
-			this.doIndex(page);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			lock.unlock();
-		}
+		this.doIndex(page);
 	}
 
 	/**

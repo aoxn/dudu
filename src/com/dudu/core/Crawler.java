@@ -26,7 +26,7 @@ public class Crawler extends BreadthCrawler {
 		super.visit(page);
 		pi.indexPage(page);
 		if (pi.getTotalIndexed() > ConfigOPP.MAX_CRAW) {
-			System.out.println("Finished " + ConfigOPP.MAX_CRAW + " WebPages!");
+			System.out.println("Reach CrawPage limit. Finished " + ConfigOPP.MAX_CRAW + " WebPages!");
 			pi.commitAndClose();
 			try {
 				this.stop();
@@ -39,16 +39,23 @@ public class Crawler extends BreadthCrawler {
 	public void commitJob(){
 		pi.commitAndClose();
 	}
+	public int getTotal(){
+		return pi.getTotalIndexed();
+	}
 	/* 启动爬虫 */
 	public static void main(String[] args) throws IOException {
 		Crawler crawler = new Crawler();
-		crawler.setCrawl_path("data");
-		crawler.setRoot("data/file");
-		// crawler.addSeed("http://www.oppland.no/");
-		// crawler.addRegex("http://*.oppland.no/.*");
-		crawler.addSeed("http://www.oschina.net/");
-		crawler.addRegex(".*oschina.net/.*");
+		crawler.setCrawl_path(ConfigOPP.CRAWLER_ROOT);
+		crawler.setRoot(ConfigOPP.DATA_ROOT);
+		crawler.addSeed("http://www.oppland.no/");
+		crawler.addRegex("http://*.oppland.no/.*");
+//		crawler.addSeed("http://www.oschina.net/");
+//		crawler.addRegex(".*oschina.net/.*");
+		
+//		crawler.setThreads(10);
 		crawler.start(2);
 		crawler.commitJob();
+		System.out.println("unReach CrawPage limit. Finished " + crawler.getTotal() + " WebPages!");
+		
 	}
 }
