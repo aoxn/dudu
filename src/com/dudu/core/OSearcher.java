@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
@@ -13,7 +12,6 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
@@ -23,7 +21,7 @@ public class OSearcher {
 	//IndexSearcher是一个线程安全的对象，此处不用考虑并发
 	IndexSearcher searcher = null;
 	IndexReader reader     = null;
-	Analyzer analyzer 	   = new StandardAnalyzer(ConfigOPP.LUCENE_VERSION);
+	Analyzer analyzer 	   = new StandardAnalyzer();
 	public OSearcher(){
 		init();
 	}
