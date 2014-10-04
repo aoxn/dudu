@@ -8,6 +8,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -67,6 +68,8 @@ public class PageIndexer {
 		Document doc = new Document();
 		String text = page.doc.text();
 		//这儿text可能为空，需要改进的地方
+		doc.add(new TextField("title",page.doc.title(),Field.Store.YES));
+		doc.add(new StringField("site",page.url,Field.Store.YES));
 		doc.add(new TextField("contents",text,Field.Store.YES));
 		try {
 			lock.lock();
@@ -99,27 +102,5 @@ public class PageIndexer {
 		return this.total;
 	}
 	
-	/**
-	 * search函数
-	 * @param index
-	 * @param line
-	 * @return
-	 */
-	public static TopDocs getResult(String index,String line) {
-		IndexReader reader;
-		TopDocs top=null;
-		try {
-			reader = DirectoryReader.open(FSDirectory.open(new File(index)));
-			IndexSearcher searcher = new IndexSearcher(reader);
-			Analyzer analyzer = new StandardAnalyzer();
-			QueryParser parser = new QueryParser(Version.LUCENE_4_10_0, "doc", analyzer);
-			Query query = parser.parse(line);
-			top = searcher.search(query, null, 100);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return top;
-	}
+	
 }
