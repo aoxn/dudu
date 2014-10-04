@@ -30,7 +30,8 @@ public class PageIndexer {
 
 	private IndexWriter indexer = null;
 	private int total = 0;
-	Lock lock = null;
+	private Lock lock = null;
+	
 	public PageIndexer(Lock lock){
 		this.init(lock,new StandardAnalyzer(ConfigOPP.LUCENE_VERSION));
 	}
@@ -49,6 +50,10 @@ public class PageIndexer {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * 构建索引的外部接口函数
+	 * @param page
+	 */
 	public void indexPage(Page page) {
 		try {
 			lock.lock();
@@ -64,7 +69,7 @@ public class PageIndexer {
 	 * 实际上建立索引的函数
 	 * @param page
 	 */
-	public void doIndex(Page page) {
+	private void doIndex(Page page) {
 		if(page.doc==null) return;
 		Document doc = new Document();
 		String text = page.doc.text();
@@ -83,6 +88,10 @@ public class PageIndexer {
 	private int increment() {
 		return ++total;
 	}
+	
+	/*
+	 * 提交索引
+	 */
 	public void commitAndClose(){
 		if(indexer!=null){
 			try {
@@ -96,6 +105,13 @@ public class PageIndexer {
 	public int getTotalIndexed(){
 		return this.total;
 	}
+	
+	/**
+	 * search函数
+	 * @param index
+	 * @param line
+	 * @return
+	 */
 	public static TopDocs getResult(String index,String line) {
 		IndexReader reader;
 		TopDocs top=null;
