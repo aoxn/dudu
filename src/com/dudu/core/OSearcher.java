@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
@@ -12,6 +13,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
@@ -21,13 +23,13 @@ public class OSearcher {
 	//IndexSearcher是一个线程安全的对象，此处不用考虑并发
 	IndexSearcher searcher = null;
 	IndexReader reader     = null;
-	Analyzer analyzer 	   = new StandardAnalyzer();
+	Analyzer analyzer 	   = new StandardAnalyzer(ConfigOPP.LUCENE_VERSION);
 	public OSearcher(){
 		init();
 	}
 	public void init(){
 		try {
-			reader = DirectoryReader.open(FSDirectory.open(new File(ConfigOPP.INDEX_PATH)));
+			reader = DirectoryReader.open(FSDirectory.open(new File(ConfigOPP.TOMCAT_INDEX_PATH)));
 			searcher = new IndexSearcher(reader);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -56,7 +58,7 @@ public class OSearcher {
 	 */
 	public TopDocs getMultiQueryPage(String line,String[] fields,Analyzer analyzer) {
 		TopDocs top = null;
-		if(fields == null) fields = new String[]{"content"};
+		if(fields == null) fields = new String[]{"contents"};
 		MultiFieldQueryParser parser = new MultiFieldQueryParser(fields,getAnalyzer(analyzer));
 		try {
 			Query qu = parser.parse(line);
@@ -77,7 +79,7 @@ public class OSearcher {
 	 */
 	public TopDocs getTermQueryPage(String line,String[] fields,Analyzer analyzer) {
 		TopDocs top = null;
-        QueryParser parser = new QueryParser("content", getAnalyzer(analyzer));  
+        QueryParser parser = new QueryParser("contents", getAnalyzer(analyzer));  
         try {
 			Query q = parser.parse(line);
 			top 	= searcher.search(q, 100);
@@ -89,4 +91,6 @@ public class OSearcher {
 		}
 		return top;
 	}
+	
+
 }

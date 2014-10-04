@@ -47,10 +47,10 @@ public class Crawler extends BreadthCrawler {
 		Crawler crawler = new Crawler();
 		crawler.setCrawl_path(ConfigOPP.CRAWLER_ROOT);
 		crawler.setRoot(ConfigOPP.DATA_ROOT);
-		crawler.addSeed("http://www.oppland.no/");
-		crawler.addRegex("http://*.oppland.no/.*");
-//		crawler.addSeed("http://www.oschina.net/");
-//		crawler.addRegex(".*oschina.net/.*");
+//		crawler.addSeed("http://www.oppland.no/");
+//		crawler.addRegex("http://*.oppland.no/.*");
+		crawler.addSeed("http://www.oschina.net/");
+		crawler.addRegex(".*oschina.net/.*");
 		
 //		crawler.setThreads(10);
 		crawler.start(2);

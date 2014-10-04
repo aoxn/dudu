@@ -12,9 +12,13 @@ public class Test {
 	
 	public static void main(String[] args){
 		OSearcher sea = new OSearcher();
-		TopDocs docs = sea.getMultiQueryPage("java", null, null);
+		TopDocs docs = sea.getTermQueryPage("oschina", null, null);
+		Test.print(docs,sea);
+	}
+	
+	public static void print(TopDocs docs,OSearcher sea){
 		System.out.println("总共有" + docs.totalHits + "条记录："); 
-        try {
+		try {
         	for (ScoreDoc scoreDoc : docs.scoreDocs) {  
                 int docNum = scoreDoc.doc;
     			Document doc = sea.getIndexSearcher().doc(docNum);
@@ -23,6 +27,5 @@ public class Test {
         } catch (IOException e) {
 			e.printStackTrace();
 		}
-         
 	}
 }
