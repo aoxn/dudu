@@ -1,6 +1,7 @@
 package com.dudu.web;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.lucene.search.TopDocs;
 
 import com.dudu.core.OSearcher;
+import com.dudu.core.PageVO;
 
 /**
  * Servlet implementation class PageServelet
@@ -37,12 +39,18 @@ public class PageServelet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("servlet doget");
+		request.setCharacterEncoding("UTF-8"); 
 		String str = request.getParameter("s");
-		OSearcher sea = ContextLoader.getSearcher();
-		TopDocs docs = null;
-		if(str!=null&&str!="")
-			docs = sea.getTermQueryPage(str,null,null);
-		Test.print(docs,sea);
+		if(str!=null&&!str.equals("")){
+			OSearcher sea = ContextLoader.getSearcher();
+			TopDocs docs = null;
+			if(str!=null&&str!="")
+				docs = sea.getTermQueryPage(str,null,null);
+			List<PageVO> a = Test.getReturn(docs,sea);
+			response.setCharacterEncoding("UTF-8");
+			request.setAttribute("docs",a);
+		}
+		request.getRequestDispatcher("/index.jsp").forward(request,response);
 	}
 
 }
